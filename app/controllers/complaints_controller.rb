@@ -36,7 +36,7 @@ class ComplaintsController < ApplicationController
       build_group_query_with_count
 
       # Because of the weird and annoying way that active record
-      # returns groupings as the group collection set as a
+      # returns groupings with the group collection set as a the
       # key and the count as its value I have to massage the data to make
       # it look sane for the front end.
       # Example transformation:
@@ -80,7 +80,7 @@ class ComplaintsController < ApplicationController
           raise "#{group} is not a valid group, choose from #{VALID_GROUPING_COLS}"
         end
 
-        @complaints = @complaints.where("#{group} IS NOT NULL").group(group)
+        @complaints = @complaints.where("#{group} IS NOT NULL").group(group).having("count(#{group}) > 1")
       end
     end
     def build_group_query_with_count
