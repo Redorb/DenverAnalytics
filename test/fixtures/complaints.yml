@@ -1,0 +1,45 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  case_summary: MyString
+  case_status: 
+  case_created: 2016-02-19
+  case_closed: 2016-02-19
+  first_call_resolution: 
+  customer_zip_code: MyString
+  incident_address_one: MyString
+  incident_address_two: MyString
+  incident_intersection_one: MyString
+  incident_intersection_two: MyString
+  incident_zip_code: MyString
+  longtitude: MyString
+  latitude: MyString
+  agency: 
+  major_area: 
+  type: 
+  topic: 
+  council_district: 1
+  police_district: 1
+  neighborhood: MyString
+
+two:
+  case_summary: MyString
+  case_status: 
+  case_created: 2016-02-19
+  case_closed: 2016-02-19
+  first_call_resolution: 
+  customer_zip_code: MyString
+  incident_address_one: MyString
+  incident_address_two: MyString
+  incident_intersection_one: MyString
+  incident_intersection_two: MyString
+  incident_zip_code: MyString
+  longtitude: MyString
+  latitude: MyString
+  agency: 
+  major_area: 
+  type: 
+  topic: 
+  council_district: 1
+  police_district: 1
+  neighborhood: MyString
