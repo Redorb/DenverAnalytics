@@ -40,6 +40,11 @@ class ComplaintsController < ApplicationController
     render_complaints_with_group 'neighborhood', params[:with_group_date]
   end
 
+  def complaints_by_area_from_coords
+    @complaints = Complaint.within(0.1, :origin => [39.691552,-104.978432]).count
+    render json: @complaints
+  end
+
   private
     def render_complaints_with_group group, with_group_date
       begin

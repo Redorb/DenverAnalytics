@@ -13,8 +13,8 @@ class CreateComplaints < ActiveRecord::Migration
       t.string :incident_intersection_one
       t.string :incident_intersection_two
       t.string :incident_zip_code
-      t.string :longitude
-      t.string :latitude
+      t.float :longitude
+      t.float :latitude
       t.string :agency
       t.string :division
       t.string :major_area

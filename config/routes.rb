@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   get 'count_by_date_group_police_dist(/:with_group_date)', to: 'complaints#count_by_date_group_police_dist'
   get 'count_by_date_group_area(/:with_group_date)', to: 'complaints#count_by_date_group_area'
   get 'count_by_date_group_neighborhood(/:with_group_date)', to: 'complaints#count_by_date_group_neighborhood'
+  get 'complaints_by_area_from_coords', to: 'complaints#complaints_by_area_from_coords'
 end
