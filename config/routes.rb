@@ -1,57 +1,12 @@
 Rails.application.routes.draw do
-  resources :complaints
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
-
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  get 'full_count_by_date', to: 'complaints#full_count_by_date'
+  get 'count_by_date_group_on_summary(/:with_group_date)', to: 'complaints#count_by_date_group_on_summary'
+  get 'count_by_date_group_on_agency(/:with_group_date)', to: 'complaints#count_by_date_group_on_agency'
+  get 'count_by_date_group_division(/:with_group_date)', to: 'complaints#count_by_date_group_division'
+  get 'count_by_date_group_type(/:with_group_date)', to: 'complaints#count_by_date_group_type'
+  get 'count_by_date_group_topic(/:with_group_date)', to: 'complaints#count_by_date_group_topic'
+  get 'count_by_date_group_council_dist(/:with_group_date)', to: 'complaints#count_by_date_group_council_dist'
+  get 'count_by_date_group_police_dist(/:with_group_date)', to: 'complaints#count_by_date_group_police_dist'
+  get 'count_by_date_group_area(/:with_group_date)', to: 'complaints#count_by_date_group_area'
+  get 'count_by_date_group_neighborhood(/:with_group_date)', to: 'complaints#count_by_date_group_neighborhood'
 end
