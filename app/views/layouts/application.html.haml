@@ -1,0 +1,40 @@
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Denver Analytics
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body
+    %header
+      %nav.blue
+        .container
+          .nav-wrapper
+            %a{href:'#', id:'main', class:'brand-logo'} Denver Analytics
+            %ul.right.hide-on-med-and-down{id: 'nav-mobile'}
+              %li
+                %a{href:'#', id:'graph-tool'} Viz Data
+    = yield
+    %footer.page-footer.blue
+      .container
+        .row
+          %div{class: 'col s4'}
+            %h5.white-text Denver 311
+            %p.grey-text.text-lighten-4
+              To learn more about the data used in the visualization click the button below
+            %a.btn.waves-effect.waves-light.blue.lighten-3{href: 'http://data.denvergov.org/dataset/city-and-county-of-denver-311-service-requests'}
+              Denver Open Data
+          %div{class: 'col s4'}
+            %h5.white-text Colorado Tech
+            %p.grey-text.text-lighten-4
+              Want to know more about the Colorado tech scene?
+            %a.btn.waves-effect.waves-light.blue.lighten-3{href: 'http://www.builtincolorado.com/'}
+              Built In Colorado
+          %div{class: 'col s4'}
+            %h5.white-text Github
+            %iframe{src: "http://githubbadge.appspot.com/redorb",
+              style:"border: 0;height: 142px;width: 200px;overflow: hidden;",
+              frameBorder: "0"}
+      .footer-copyright
+        .container
+          © Never

@@ -9,6 +9,10 @@ class ComplaintsController < ApplicationController
                           'major_area',
                           'neighborhood' ]
 
+  def index
+
+  end
+
   def full_count_by_date
     @complaints = Complaint.where("case_created IS NOT NULL").group("SUBSTR(case_created,1,10)").count
     render json: @complaints
@@ -30,7 +34,29 @@ class ComplaintsController < ApplicationController
     begin
       @complaints = Complaint.where("case_created IS NOT NULL").group("SUBSTR(case_created,1,10)")
       build_group_query_with_count
-      render json: @complaints
+
+      # Because of the weird and annoying way that active record
+      # returns groupings as the group collection set as a
+      # key and the count as its value I have to massage the data to make
+      # it look sane for the front end.
+      # Example transformation:
+      #     ["2014-08-29", "10 Min. Grace"]: 2,
+      #     ["2014-08-29", "311 - General Inquiry"]: 49,
+      #     ["2014-08-29", "311 Compliment"]: 1,
+      #  =>
+      #     2014-08-29: {
+      #     10 Min. Grace: 2,
+      #     311 - General Inquiry: 49,
+      #     311 Compliment: 1
+      # So the below set groups the set on date first and then fixes the resulting
+      # pairing in the newly created hash map of dates.
+
+      result = @complaints.group_by{|c| c[0][0]}.each_with_object({}) { |(k, v), hash|
+        hash[k] = Hash[v.collect { |element|
+            [element[0][1], element[1]]
+        }]
+      }
+      render json: result
     rescue => error
       render json: {error: error.message}
     end

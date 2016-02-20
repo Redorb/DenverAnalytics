@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root :to => 'complaints#index'
   get 'full_count_by_date', to: 'complaints#full_count_by_date'
   get 'complaints_by_area_from_coords', to: 'complaints#complaints_by_area_from_coords'
   get 'count_by_groups(/:groups)', to: 'complaints#count_by_groups'
