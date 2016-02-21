@@ -14,7 +14,21 @@
 //= require jquery_ujs
 //= require materialize-sprockets
 //= require turbolinks
+//= require data_api
 //= require_tree .
-$(document).ready(function(){
-    $('.parallax').parallax();
-});
+
+class Application {
+    constructor() {
+        this.api = new DataApi('potato');
+        this.setupMaterialize();
+
+    }
+
+    setupMaterialize() {
+        $(document).ready(function(){
+            $('.parallax').parallax();
+        });
+    }
+}
+
+let app = new Application();
