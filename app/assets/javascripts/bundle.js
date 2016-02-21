@@ -7,5 +7,8 @@
 //= require materialize-sprockets
 //= require turbolinks
 //= require data_api
+//= require api_tools
+//= require api_graph
+//= require api_form
 //= require application
 //= require_tree .

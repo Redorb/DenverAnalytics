@@ -80,7 +80,9 @@ class ComplaintsController < ApplicationController
   private
     def query_by_location radius, location, groups
       @complaints = Complaint.within(radius, :origin => location)
+      query_on_date(MONTH)
       build_group_query_with_count(groups)
+      transform_date_group_queries
       render json: @complaints
     end
 
@@ -121,7 +123,7 @@ class ComplaintsController < ApplicationController
       @complaints = @complaints.map{ |c|
         [[c[0][0], c[0][1..-1].join('|')], c[1]]
       }
-      @complaints.group_by{|c| c[0][1]}.each_with_object({}) { |(k, v), hash|
+      @complaints = @complaints.group_by{|c| c[0][1]}.each_with_object({}) { |(k, v), hash|
         hash[k] = Hash[v.collect { |element|
           [element[0][0], element[1]]
         }]

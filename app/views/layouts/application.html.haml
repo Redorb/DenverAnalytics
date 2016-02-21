@@ -2,7 +2,8 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %title Denver Analytics
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag "https://fonts.googleapis.com/icon?family=Material+Icons"
     = csrf_meta_tags
   %body
     %header
@@ -23,13 +24,13 @@
             %h5.white-text Denver 311
             %p.grey-text.text-lighten-4
               To learn more about the data used in the visualization click the button below
-            %a.btn.waves-effect.waves-light.blue.lighten-3{href: 'http://data.denvergov.org/dataset/city-and-county-of-denver-311-service-requests'}
+            %a.btn.waves-effect.waves-light.blue.lighten-2{href: 'http://data.denvergov.org/dataset/city-and-county-of-denver-311-service-requests'}
               Denver Open Data
           %div{class: 'col s4'}
             %h5.white-text Colorado Tech
             %p.grey-text.text-lighten-4
               Want to know more about the Colorado tech scene?
-            %a.btn.waves-effect.waves-light.blue.lighten-3{href: 'http://www.builtincolorado.com/'}
+            %a.btn.waves-effect.waves-light.blue.lighten-2{href: 'http://www.builtincolorado.com/'}
               Built In Colorado
           %div{class: 'col s4'}
             %h5.white-text Github

@@ -1,26 +1,22 @@
 class DataApi {
-    constructor() {
-        this.countByAreaWithAddress();
-    }
-
-    fullCountByDay() {
+    static fullCountByDay() {
         $.get("/full_count_by_day", data => {
             console.log(data);
             ApiGraph.fullCountByDayGraph(data);
         });
     }
 
-    fullCountByMonth() {
+    static fullCountByMonth() {
         $.get("/full_count_by_month", data => {
             console.log(data);
             ApiGraph.fullCountByMonthGraph(data);
         });
     }
 
-    countByAreaWithAddress() {
-        let radius = 0.2;
-        let address = '1144 Broadway, Denver, CO';
-        let groups = ['case_summary'];
+    static countByAreaWithAddress() {
+        let radius = ApiTools.getRadius();
+        let address = ApiTools.getAddress();
+        let groups = ApiTools.getGroups();
 
         $.ajax({
                 method: "POST",
@@ -33,30 +29,33 @@ class DataApi {
             })
             .done(function (data) {
                 console.log(data);
+                ApiGraph.dateGroupGraph(data);
             });
     }
 
-    countByAreaWithLatLong() {
-        let radius = 0.2;
-        let latitude = 39.74;
-        let longitude = 104.99;
+    static countByAreaWithLatLong() {
+        let radius = ApiTools.getRadius();
+        let latLong = ApiTools.getLatLong();
+        let groups = ApiTools.getGroups();
 
         $.ajax({
                 method: "POST",
-                url: "/count_by_area_with_address",
+                url: "/count_by_area_with_lat_long",
                 data: {
                     radius: radius,
-                    latitude: latitude,
-                    longitude: longitude
+                    latitude: latLong[0],
+                    longitude: latLong[1],
+                    groups: groups
                 }
             })
             .done(function (data) {
                 console.log(data);
+                ApiGraph.dateGroupGraph(data);
             });
     }
 
-    countByGroups() {
-        let groups = ['case_status'];
+    static countByGroups() {
+        let groups = ApiTools.getGroups();
 
         $.ajax({
                 method: "POST",
@@ -71,8 +70,8 @@ class DataApi {
             });
     }
 
-    countByDayAndGroups() {
-        let groups = ['police_district'];
+    static countByDayAndGroups() {
+        let groups = ApiTools.getGroups();
 
         $.ajax({
                 method: "POST",
@@ -83,12 +82,12 @@ class DataApi {
             })
             .done(function (data) {
                 console.log(data);
-                ApiGraph.countByDayAndGroupsGraph(data);
+                ApiGraph.dateGroupGraph(data);
             });
     }
 
-    countByMonthAndGroups() {
-        let groups = ['police_district'];
+    static countByMonthAndGroups() {
+        let groups = ApiTools.getGroups();
 
         $.ajax({
                 method: "POST",
@@ -99,12 +98,12 @@ class DataApi {
             })
             .done(function (data) {
                 console.log(data);
-                ApiGraph.countByMonthAndGroupsGraph(data)
+                ApiGraph.dateGroupGraph(data);
             });
     }
 
-    infoByGroups() {
-        let groups = ['case_summary'];
+    static infoByGroups() {
+        let groups = ApiTools.getGroups();
 
         $.ajax({
                 method: "POST",

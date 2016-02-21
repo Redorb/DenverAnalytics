@@ -1,0 +1,15 @@
+#queryContainer.page
+  .container
+    .row.col.s12
+    %form.col.s12
+      .row
+        = render 'complaints/partials/query_select'
+      .row
+        = render 'complaints/partials/group_select'
+      .row
+        = render 'complaints/partials/location_input'
+      .row
+        .col.s12
+          %button.btn.waves.waves-light.blue.lighten-2.right{id: 'renderGraph'}
+            Render Graph
+            %i.material-icons.right send

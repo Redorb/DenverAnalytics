@@ -1,6 +1,6 @@
 class Application {
     constructor() {
-        this.api = new DataApi();
+        this.apiForm = new ApiForm();
         this.setupMaterialize();
         this.setupNav();
 
@@ -9,6 +9,9 @@ class Application {
     setupMaterialize() {
         $(document).ready(function(){
             $('.parallax').parallax();
+        });
+        $(document).ready(function() {
+            $('select').material_select();
         });
     }
 
@@ -20,7 +23,7 @@ class Application {
         });
         $('#nav-graphing').click(() => {
             $('.page').hide();
-            $('#graphingContainer').show();
+            $('#queryContainer').show();
         });
     }
 }

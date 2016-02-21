@@ -1,0 +1,12 @@
+.input-field.col.s12
+  %select{id: 'querySelect'}
+    %option{value: '', disabled: true, selected: true} Choose your option
+    %option{id: 'fullCountByDay', value: 'full_count_by_day'} Full Count By Day
+    %option{id: 'fullCountByMonth', value: 'full_count_by_month'} Full Count By Month
+    %option{id: 'countByAreaWithAddress', value: 'count_by_area_with_address'} Count By Area With Address
+    %option{id: 'countByAreaWithLatLong', value: 'count_by_area_with_lat_long'} Count by Area with Lat/Long
+    %option{id: 'countByGroups', value: 'count_by_groups'} Count By Groups
+    %option{id: 'countByDayAndGroups', value: 'count_by_day_and_groups'} Count By Day And Groups
+    %option{id: 'countByMonthAndGroups', value: 'count_by_month_and_groups'} Count By Month And Groups
+    -# %option{id: 'infoByGroups', value: 'info_by_groups'} Info By Groups
+  %label Query Select
