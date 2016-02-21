@@ -12,7 +12,7 @@ class ApiForm {
         $("#querySelect").change((e) => {
             $('.graphInput').hide();
             let option = $(e.target).children(":selected")[0].id;
-            if (option !== 'fullCountByDay' || option !== 'fullCountByMonth') {
+            if (option !== 'fullCountByDay' && option !== 'fullCountByMonth') {
                 $('.groupSelectInput').show();
             }
             $(`.${option}`).show();
