@@ -1,6 +1,6 @@
 class DataApi {
     constructor() {
-        this.fullCountByMonth();
+        this.countByGroups();
     }
 
     fullCountByDay() {
@@ -35,7 +35,7 @@ class DataApi {
     }
 
     countByGroups() {
-        let groups = ['case_summary'];
+        let groups = ['case_status'];
 
         $.ajax({
                 method: "POST",
@@ -46,11 +46,12 @@ class DataApi {
             })
             .done(function (data) {
                 console.log(data);
+                ApiGraph.countByGroupsGraph(data);
             });
     }
 
     countByDayAndGroups() {
-        let groups = ['case_summary'];
+        let groups = ['police_district'];
 
         $.ajax({
                 method: "POST",
@@ -61,11 +62,12 @@ class DataApi {
             })
             .done(function (data) {
                 console.log(data);
+                ApiGraph.countByDayAndGroupsGraph(data);
             });
     }
 
     countByMonthAndGroups() {
-        let groups = ['case_summary'];
+        let groups = ['police_district'];
 
         $.ajax({
                 method: "POST",
@@ -76,6 +78,7 @@ class DataApi {
             })
             .done(function (data) {
                 console.log(data);
+                ApiGraph.countByMonthAndGroupsGraph(data)
             });
     }
 

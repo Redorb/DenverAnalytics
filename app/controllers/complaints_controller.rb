@@ -7,7 +7,8 @@ class ComplaintsController < ApplicationController
                           'council_district',
                           'police_district',
                           'major_area',
-                          'neighborhood' ]
+                          'neighborhood',
+                          'case_status' ]
   MONTH = 7
   DAY = 10
 
@@ -102,12 +103,12 @@ class ComplaintsController < ApplicationController
     #     2014-11: 11,
     #
     # So the below set groups the set on date first and then fixes the resulting
-    # pairing in the newly created hash map of dates.
+    # pairing in the newly created hash map of dates. Multiple groups are concatenated
+    # with | to create a unique hash
     def transform_date_group_queries
       @complaints = @complaints.map{ |c|
         [[c[0][0], c[0][1..-1].join('|')], c[1]]
       }
-      byebug
       @complaints.group_by{|c| c[0][1]}.each_with_object({}) { |(k, v), hash|
         hash[k] = Hash[v.collect { |element|
           [element[0][0], element[1]]
