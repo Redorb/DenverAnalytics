@@ -20,13 +20,15 @@ class DataApi {
     countByAreaWithAddress() {
         let radius = 0.2;
         let address = '1144 Broadway, Denver, CO';
+        let groups = ['case_summary'];
 
         $.ajax({
                 method: "POST",
                 url: "/count_by_area_with_address",
                 data: {
                     radius: radius,
-                    address: address
+                    address: address,
+                    groups: groups
                 }
             })
             .done(function (data) {

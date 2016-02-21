@@ -29,7 +29,7 @@ class ComplaintsController < ApplicationController
   def count_by_groups
     begin
       @complaints = Complaint
-      build_group_query
+      build_group_query(params[:groups])
       @complaints = @complaints.count
       render json: @complaints
     rescue => error
@@ -60,28 +60,27 @@ class ComplaintsController < ApplicationController
     lat = params[:latitude]
     long = params[:longitude]
     radius = params[:radius]
-    query_by_location(radius, [lat, long])
+    groups = params[:groups]
+    query_by_location(radius, [lat, long], groups)
   end
 
   def count_by_area_with_address
     address = params[:address]
     radius = params[:radius]
-    query_by_location(radius, address)
+    groups = params[:groups]
+    query_by_location(radius, address, groups)
   end
 
   def info_by_groups
     @complaints = Complaint
-    build_group_query
+    build_group_query(params[:groups])
     render json: @complaints
   end
 
   private
-    def query_by_location radius, location
-      @complaints = Complaint
-                        .where("case_summary IS NOT NULL")
-                        .group('case_summary')
-                        .within(radius, :origin => location)
-                        .count
+    def query_by_location radius, location, groups
+      @complaints = Complaint.within(radius, :origin => location)
+      build_group_query_with_count(groups)
       render json: @complaints
     end
 
@@ -91,7 +90,7 @@ class ComplaintsController < ApplicationController
 
     def count_by_date_and_groups(time_frame)
       query_on_date(time_frame)
-      build_group_query_with_count
+      build_group_query_with_count(params[:groups])
       transform_date_group_queries
     end
 
@@ -129,8 +128,8 @@ class ComplaintsController < ApplicationController
       }
     end
 
-    def build_group_query
-      params[:groups].each do |group|
+    def build_group_query groups
+      groups.each do |group|
         group = group.downcase
         unless VALID_GROUPING_COLS.include?(group)
           raise "#{group} is not a valid group, choose from #{VALID_GROUPING_COLS}"
@@ -139,13 +138,14 @@ class ComplaintsController < ApplicationController
         @complaints = @complaints.where("#{group} IS NOT NULL").group(group).having("count(#{group}) > 1")
       end
     end
-    def build_group_query_with_count
-      build_group_query
+
+    def build_group_query_with_count groups
+      build_group_query(groups)
       @complaints = @complaints.count
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def complaint_params
-      params.require(:complaint).permit(:with_group_date)
+      params.require(:complaint).permit(:address, :latitude, :longitude, :radius, groups:[])
     end
 end
