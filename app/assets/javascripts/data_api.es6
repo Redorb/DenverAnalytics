@@ -1,6 +1,6 @@
 class DataApi {
     constructor() {
-        this.countByGroups();
+        this.countByAreaWithAddress();
     }
 
     fullCountByDay() {
@@ -17,16 +17,35 @@ class DataApi {
         });
     }
 
-    countByArea() {
-        let geocode_tuple = [];
-        let address = '';
+    countByAreaWithAddress() {
+        let radius = 0.2;
+        let address = '1144 Broadway, Denver, CO';
 
         $.ajax({
                 method: "POST",
-                url: "/count_by_area",
+                url: "/count_by_area_with_address",
                 data: {
-                    geocode_tuple: geocode_tuple,
+                    radius: radius,
                     address: address
+                }
+            })
+            .done(function (data) {
+                console.log(data);
+            });
+    }
+
+    countByAreaWithLatLong() {
+        let radius = 0.2;
+        let latitude = 39.74;
+        let longitude = 104.99;
+
+        $.ajax({
+                method: "POST",
+                url: "/count_by_area_with_address",
+                data: {
+                    radius: radius,
+                    latitude: latitude,
+                    longitude: longitude
                 }
             })
             .done(function (data) {

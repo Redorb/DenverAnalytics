@@ -22,5 +22,7 @@ module DenverAnalytics
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    Geokit::Geocoders::secure = false
+    Geokit::Geocoders::ssl_verify_mode = OpenSSL::SSL::VERIFY_NONE
   end
 end

@@ -56,13 +56,17 @@ class ComplaintsController < ApplicationController
     end
   end
 
-  def count_by_area
-    @complaints = Complaint
-                      .where("case_summary IS NOT NULL")
-                      .group('case_summary')
-                      .within(0.2, :origin => [39.691552,-104.978432])
-                      .count
-    render json: @complaints
+  def count_by_area_with_lat_long
+    lat = params[:latitude]
+    long = params[:longitude]
+    radius = params[:radius]
+    query_by_location(radius, [lat, long])
+  end
+
+  def count_by_area_with_address
+    address = params[:address]
+    radius = params[:radius]
+    query_by_location(radius, address)
   end
 
   def info_by_groups
@@ -72,6 +76,15 @@ class ComplaintsController < ApplicationController
   end
 
   private
+    def query_by_location radius, location
+      @complaints = Complaint
+                        .where("case_summary IS NOT NULL")
+                        .group('case_summary')
+                        .within(radius, :origin => location)
+                        .count
+      render json: @complaints
+    end
+
     def query_on_date(time_frame)
       @complaints = Complaint.where("case_created IS NOT NULL").group("SUBSTR(case_created,1,#{time_frame})")
     end
