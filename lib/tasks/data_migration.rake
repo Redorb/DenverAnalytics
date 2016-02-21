@@ -37,19 +37,18 @@ namespace :data_migration do
   task partial_bulk_csv_import: :environment do
     file_name = File.join Rails.root, "clean.csv"
     complaints = []
-    n = 0
     CSV.foreach(file_name, headers: true) do |row|
       row_hash = row.to_hash
       complaint = create_complaint_from_csv_row row_hash
       complaints << complaint
-      n+=1
 
-      if n == 1000
+      if complaints.length == 10000
         Complaint.import complaints
         complaints = []
-        n = 0
       end
     end
+
+    Complaint.import complaints if complaints.length != 0
   end
 
   desc "Imports CSV into rails database in a complete batch, very memory intensive ~9GB"
