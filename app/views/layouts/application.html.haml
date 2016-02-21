@@ -3,7 +3,6 @@
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %title Denver Analytics
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-    = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
     %header
@@ -13,7 +12,9 @@
             %a{href:'#', id:'main', class:'brand-logo'} Denver Analytics
             %ul.right.hide-on-med-and-down{id: 'nav-mobile'}
               %li
-                %a{href:'#', id:'graph-tool'} Viz Data
+                %a{href:'#', id:'nav-landing'} Landing
+              %li
+                %a{href:'#', id:'nav-graphing'} Viz Data
     = yield
     %footer.page-footer.blue
       .container
@@ -38,3 +39,4 @@
       .footer-copyright
         .container
           © Never
+    = javascript_include_tag 'bundle', 'data-turbolinks-track' => true

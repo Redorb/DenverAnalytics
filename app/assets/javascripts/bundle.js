@@ -1,0 +1,10 @@
+//= require jquery
+//= require jquery_ujs
+//= require highcharts
+//= require highcharts/highcharts-more
+//= require highcharts/themes/dark-unica
+//= require materialize-sprockets
+//= require turbolinks
+//= require data_api
+//= require application
+//= require_tree .
