@@ -95,16 +95,22 @@ class ComplaintsController < ApplicationController
     #     ["2014-08-29", "311 - General Inquiry"]: 49,
     #     ["2014-08-29", "311 Compliment"]: 1,
     #  =>
-    #     2014-08-29: {
-    #     10 Min. Grace: 2,
-    #     311 - General Inquiry: 49,
-    #     311 Compliment: 1
+    # 10 Min. Grace: {
+    #     2014-08: 2,
+    #     2014-09: 17,
+    #     2014-10: 17,
+    #     2014-11: 11,
+    #
     # So the below set groups the set on date first and then fixes the resulting
     # pairing in the newly created hash map of dates.
     def transform_date_group_queries
-      @complaints.group_by{|c| c[0][0]}.each_with_object({}) { |(k, v), hash|
+      @complaints = @complaints.map{ |c|
+        [[c[0][0], c[0][1..-1].join('|')], c[1]]
+      }
+      byebug
+      @complaints.group_by{|c| c[0][1]}.each_with_object({}) { |(k, v), hash|
         hash[k] = Hash[v.collect { |element|
-          [element[0][1], element[1]]
+          [element[0][0], element[1]]
         }]
       }
     end
