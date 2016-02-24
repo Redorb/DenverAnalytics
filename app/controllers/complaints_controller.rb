@@ -1,4 +1,6 @@
 class ComplaintsController < ApplicationController
+  before_action :api_params
+
   VALID_GROUPING_COLS = [ 'case_summary',
                           'agency',
                           'division',
@@ -137,7 +139,7 @@ class ComplaintsController < ApplicationController
           raise "#{group} is not a valid group, choose from #{VALID_GROUPING_COLS}"
         end
 
-        @complaints = @complaints.where("#{group} IS NOT NULL").group(group).having("count(#{group}) > 1")
+        @complaints = @complaints.where("? IS NOT NULL", group).group(group).having("count(?) > 1", group)
       end
     end
 
@@ -147,7 +149,7 @@ class ComplaintsController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def complaint_params
-      params.require(:complaint).permit(:address, :latitude, :longitude, :radius, groups:[])
+    def api_params
+      params.permit(:address, :latitude, :longitude, :radius, groups:[])
     end
 end
