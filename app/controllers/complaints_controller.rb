@@ -29,7 +29,7 @@ class ComplaintsController < ApplicationController
   def count_by_day_and_groups
     begin
       @complaints = Complaint.count_by_date_and_groups(params[:groups], Complaint::DAY)
-      transform_date_group_queries
+      @complaints = transform_date_group_queries(@complaints)
       render json: @complaints
     rescue => error
       render json: {error: error.message}
@@ -39,7 +39,7 @@ class ComplaintsController < ApplicationController
   def count_by_month_and_groups
     begin
       @complaints = Complaint.count_by_date_and_groups(params[:groups], Complaint::MONTH)
-      transform_date_group_queries
+      @complaints = transform_date_group_queries(@complaints)
       render json: @complaints
     rescue => error
       render json: {error: error.message}
@@ -52,7 +52,7 @@ class ComplaintsController < ApplicationController
     radius = params[:radius]
     groups = params[:groups]
     @complaints = Complaint.query_by_location(radius, [lat, long], groups)
-    transform_date_group_queries
+    @complaints = transform_date_group_queries(@complaints)
     render json: @complaints
   end
 
@@ -61,7 +61,7 @@ class ComplaintsController < ApplicationController
     radius = params[:radius]
     groups = params[:groups]
     @complaints = Complaint.query_by_location(radius, address, groups)
-    transform_date_group_queries
+    @complaints = transform_date_group_queries(@complaints)
     render json: @complaints
   end
 
@@ -89,15 +89,16 @@ class ComplaintsController < ApplicationController
     # So the below set groups the set on date first and then fixes the resulting
     # pairing in the newly created hash map of dates. Multiple groups are concatenated
     # with | to create a unique hash
-    def transform_date_group_queries
-      @complaints = @complaints.map{ |c|
-        [[c[0][0], c[0][1..-1].join('|')], c[1]]
+    def transform_date_group_queries(complaints)
+      cmprsd_topics_key_hash = {}
+      complaints.each { |k, v|
+      	date = k[0]
+      	topic_key = k[1..-1].join('|')
+      	count = v
+      	cmprsd_topics_key_hash[topic_key] ||= {}
+      	cmprsd_topics_key_hash[topic_key][date] = count
       }
-      @complaints = @complaints.group_by{|c| c[0][1]}.each_with_object({}) { |(k, v), hash|
-        hash[k] = Hash[v.collect { |element|
-          [element[0][0], element[1]]
-        }]
-      }
+      cmprsd_topics_key_hash
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
