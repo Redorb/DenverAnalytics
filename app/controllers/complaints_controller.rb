@@ -89,7 +89,8 @@ class ComplaintsController < ApplicationController
     end
 
     def query_on_date(time_frame)
-      @complaints = Complaint.where("case_created IS NOT NULL").group("SUBSTR(case_created,1,#{time_frame})")
+      @complaints = @complaints.nil? ? Complaint : @complaints
+      @complaints = @complaints.where("case_created IS NOT NULL").group("SUBSTR(case_created,1,#{time_frame})")
     end
 
     def count_by_date_and_groups(time_frame)

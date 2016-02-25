@@ -50,17 +50,17 @@ class ComplaintsControllerTest < ActionController::TestCase
   end
 
   test "should get count by area with lat long" do
-    post :count_by_area_with_lat_long, latitude: 29.66, longitude: 104.83, radius: 0.2, groups: ["case_summary"]
+    post :count_by_area_with_lat_long, latitude: 39.7347110, longitude: -104.9870100, radius: 0.2, groups: ["case_summary"]
     assert_response :success
     response_length = JSON.parse(response.body).length
-    assert_equal(1051, response_length)
+    assert_equal(27, response_length)
   end
 
   test "should get count by area with address" do
     post :count_by_area_with_address, address: '1144 Broadway, Denver, CO', radius: 0.2, groups: ["case_summary"]
     assert_response :success
     response_length = JSON.parse(response.body).length
-    assert_equal(1051, response_length)
+    assert_equal(27, response_length)
   end
 
   test "should get info for groups" do
