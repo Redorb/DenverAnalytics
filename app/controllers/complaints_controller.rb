@@ -1,37 +1,23 @@
 class ComplaintsController < ApplicationController
   before_action :api_params
 
-  VALID_GROUPING_COLS = [ 'case_summary',
-                          'agency',
-                          'division',
-                          'type',
-                          'topic',
-                          'council_district',
-                          'police_district',
-                          'major_area',
-                          'neighborhood',
-                          'case_status' ]
-  MONTH = 7
-  DAY = 10
-
   def index
 
   end
 
   def full_count_by_month
-    full_count_by_date(MONTH)
+    @complaints = Complaint.full_count_by_date(Complaint::MONTH)
     render json: @complaints
   end
 
   def full_count_by_day
-    full_count_by_date(DAY)
+    @complaints = Complaint.full_count_by_date(Complaint::DAY)
     render json: @complaints
   end
 
   def count_by_groups
     begin
-      @complaints = Complaint
-      build_group_query(params[:groups])
+      @complaints = Complaint.build_group_query(params[:groups])
       @complaints = @complaints.count
       render json: @complaints
     rescue => error
@@ -42,8 +28,9 @@ class ComplaintsController < ApplicationController
 
   def count_by_day_and_groups
     begin
-      result = count_by_date_and_groups(DAY)
-      render json: result
+      @complaints = Complaint.count_by_date_and_groups(params[:groups], Complaint::DAY)
+      transform_date_group_queries
+      render json: @complaints
     rescue => error
       render json: {error: error.message}
     end
@@ -51,8 +38,9 @@ class ComplaintsController < ApplicationController
 
   def count_by_month_and_groups
     begin
-      result = count_by_date_and_groups(MONTH)
-      render json: result
+      @complaints = Complaint.count_by_date_and_groups(params[:groups], Complaint::MONTH)
+      transform_date_group_queries
+      render json: @complaints
     rescue => error
       render json: {error: error.message}
     end
@@ -63,47 +51,26 @@ class ComplaintsController < ApplicationController
     long = params[:longitude]
     radius = params[:radius]
     groups = params[:groups]
-    query_by_location(radius, [lat, long], groups)
+    @complaints = Complaint.query_by_location(radius, [lat, long], groups)
+    transform_date_group_queries
+    render json: @complaints
   end
 
   def count_by_area_with_address
     address = params[:address]
     radius = params[:radius]
     groups = params[:groups]
-    query_by_location(radius, address, groups)
+    @complaints = Complaint.query_by_location(radius, address, groups)
+    transform_date_group_queries
+    render json: @complaints
   end
 
   def info_by_groups
-    @complaints = Complaint
-    build_group_query(params[:groups])
+    @complaints = Complaint.build_group_query(params[:groups])
     render json: @complaints
   end
 
   private
-    def query_by_location radius, location, groups
-      @complaints = Complaint.within(radius, :origin => location)
-      query_on_date(MONTH)
-      build_group_query_with_count(groups)
-      transform_date_group_queries
-      render json: @complaints
-    end
-
-    def query_on_date(time_frame)
-      @complaints = @complaints.nil? ? Complaint : @complaints
-      @complaints = @complaints.where("case_created IS NOT NULL").group("SUBSTR(case_created,1,#{time_frame})")
-    end
-
-    def count_by_date_and_groups(time_frame)
-      query_on_date(time_frame)
-      build_group_query_with_count(params[:groups])
-      transform_date_group_queries
-    end
-
-    def full_count_by_date(time_frame)
-      query_on_date(time_frame)
-      @complaints = @complaints.count
-    end
-
     # Because of the weird and annoying way that active record
     # returns groupings with the group collection set as a the
     # key and the count as its value I have to massage the data to make
@@ -131,22 +98,6 @@ class ComplaintsController < ApplicationController
           [element[0][0], element[1]]
         }]
       }
-    end
-
-    def build_group_query groups
-      groups.each do |group|
-        group = group.downcase
-        unless VALID_GROUPING_COLS.include?(group)
-          raise "#{group} is not a valid group, choose from #{VALID_GROUPING_COLS}"
-        end
-
-        @complaints = @complaints.where("? IS NOT NULL", group).group(group).having("count(?) > 1", group)
-      end
-    end
-
-    def build_group_query_with_count groups
-      build_group_query(groups)
-      @complaints = @complaints.count
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
