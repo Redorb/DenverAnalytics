@@ -8,7 +8,7 @@
 6. If you find better graphs for the data sets let me know!
 
 ### Info
-Above you'll fine a link called Viz Data which will let you query the Denver 311 Data set for the
+Above you'll find a link called Viz Data which will let you query the Denver 311 Data set for the
 time of 8/2014 to 8/2015. I've done my best with cleaning the available data and offering graphs
 that best help visualize the data. However due to the large data set and groupings certain combinations
 are hard to read, if a better graph is known feel free to suggest it and I'll make the necessary changes.
